@@ -6,6 +6,7 @@ import com.sbessential.sbessential.mapper.AnimeMapper;
 import com.sbessential.sbessential.repository.AnimeRepository;
 import com.sbessential.sbessential.requests.AnimePostRequestBody;
 import com.sbessential.sbessential.requests.AnimePutRequestBody;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class AnimeService {
         return animeRepository.findByName(name);
     }
 
+    @Transactional
     public Anime findByIdOrThrowBadRequestException(long id){
         return animeRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Anime not found"));
