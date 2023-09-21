@@ -11,3 +11,15 @@ spring:
     hibernate:
       ddl:auto: update
     show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+info:
+  app: Spring boot 2 essentials by DevDojo
+  website: https://lucasvidoto.com
+  github: https://github.com/lucasestanislau/springboot2-essentials
+

@@ -4,6 +4,9 @@ import com.sbessential.sbessential.domain.Anime;
 import com.sbessential.sbessential.requests.AnimePostRequestBody;
 import com.sbessential.sbessential.requests.AnimePutRequestBody;
 import com.sbessential.sbessential.service.AnimeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,7 +29,9 @@ public class AnimeController {
     private final AnimeService animeService;
 
     @GetMapping
-    public ResponseEntity<Page<Anime>> list(Pageable pageable){
+    @Operation(summary = "List all animes paginated", description = "the default size is 20, use the parameter size to change the default value",
+    tags = {"anime"})
+    public ResponseEntity<Page<Anime>> list( Pageable pageable){
         return new ResponseEntity<>(animeService.listAll(pageable), HttpStatus.OK);
     }
 
@@ -60,6 +65,10 @@ public class AnimeController {
 
     @DeleteMapping(path = "/admin/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful operation"),
+            @ApiResponse(responseCode = "400", description = "When anime does not found in the database")
+    })
     public ResponseEntity<Void> delete(@PathVariable long id){
         animeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
